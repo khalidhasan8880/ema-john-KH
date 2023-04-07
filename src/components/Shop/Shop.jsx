@@ -68,5 +68,4 @@ const Shop = () => {
     );
 };
 
-
-export  {Shop, getCart};
+export default Shop
