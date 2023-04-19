@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../Provider/AuthProvider';
 
 const SignUp = () => {
     // hooks
     const [error, setError] = useState('')
+    // context api 
+    const {createUser, continueWithGoogle} = useContext(AuthContext)
+    console.log(createUser);
       // signUpHandler 
       const signUpHandler=(event)=>{
         event.preventDefault();
@@ -19,8 +23,32 @@ const SignUp = () => {
             alert('password must be 6 characters or more')
             return
         }
+        createUser(email, password).then((userCredential) => {
+            // Signed in 
+            const user = userCredential.user;
+            console.log(user);
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorMessage);
+          });
     }
 
+
+    const signWithGoogle =()=>{
+        continueWithGoogle()
+        .then((result) => {
+            const user = result.user;
+            console.log(user);
+           
+          }).catch((error) => {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+         console.log(errorMessage);
+          });
+    }
 
     return (
         <div className='form-container'>
@@ -45,7 +73,7 @@ const SignUp = () => {
 
                 <div className="separator">or</div>
 
-                <button className='continue-with-google-btn'>Continue with google</button>
+                <button onClick={signWithGoogle} className='continue-with-google-btn'>Continue with google</button>
             </form>
         </div>
     );
