@@ -1,8 +1,9 @@
 import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../Provider/AuthProvider';
 
 const SignUp = () => {
+    const navigate = useNavigate()
     // hooks
     const [error, setError] = useState('')
     // context api 
@@ -27,6 +28,8 @@ const SignUp = () => {
             // Signed in 
             const user = userCredential.user;
             console.log(user);
+            event.target.reset()
+            navigate('/')
           })
           .catch((error) => {
             const errorCode = error.code;

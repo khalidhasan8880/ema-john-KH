@@ -1,11 +1,13 @@
 import React, { useContext } from 'react';
 import './Login.css'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../Provider/AuthProvider';
 const Login = () => {
     // loginHandler 
     const {signIn, continueWithGoogle}=useContext(AuthContext)
     const loginHandler=(event)=>{
+
+        const navigate = useNavigate()
         event.preventDefault();
         const email = event.target.email.value
         const password = event.target.password.value
@@ -18,6 +20,8 @@ const Login = () => {
             // Signed in 
             const user = userCredential.user;
             console.log(user);
+            event.target.reset()
+            navigate('/')
           })
           .catch((error) => {
             const errorCode = error.code;
