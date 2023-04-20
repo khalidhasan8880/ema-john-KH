@@ -1,13 +1,23 @@
 import React, { useContext } from 'react';
 import './Login.css'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../Provider/AuthProvider';
 const Login = () => {
+    
+    const navigate = useNavigate();
+    const location = useLocation();
+    let from = location.state?.from?.pathname || "/";
+    const {signIn,user, continueWithGoogle}=useContext(AuthContext)
+    if (user?.uid) {
+        return <Navigate to={from}></Navigate>
+    }
+    
     // loginHandler 
-    const {signIn, continueWithGoogle}=useContext(AuthContext)
     const loginHandler=(event)=>{
 
-        const navigate = useNavigate()
+
+        // console.log(from);
+
         event.preventDefault();
         const email = event.target.email.value
         const password = event.target.password.value
@@ -21,7 +31,7 @@ const Login = () => {
             const user = userCredential.user;
             console.log(user);
             event.target.reset()
-            navigate('/')
+            navigate(from, {replace: true})
           })
           .catch((error) => {
             const errorCode = error.code;
@@ -36,7 +46,7 @@ const Login = () => {
         .then((result) => {
             const user = result.user;
             console.log(user);
-           
+            navigate(from, {replace: true})
           }).catch((error) => {
             // Handle Errors here.
             const errorCode = error.code;
