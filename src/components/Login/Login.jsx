@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import './Login.css'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../Provider/AuthProvider';
@@ -54,7 +54,7 @@ const Login = () => {
          console.log(errorMessage);
           });
     }
-
+    const [show , setShow] = useState(true)
     return (
         <div className='form-container'>
             <form onSubmit={loginHandler} className='login-form'>
@@ -66,7 +66,8 @@ const Login = () => {
                 </div>
                 <div className="">
                     <label className="form-label">Password</label>
-                    <input name='password' type="password" className="form-control" required />
+                    <input name='password' type={show? 'password': "text"} className="form-control" required />
+                    <button onClick={()=>setShow(!show) }>{show? 'Show Password': "Hide Password"}</button>
                 </div>
                 <input type="submit" value='Log in' className="submit-btn"/>
                 {/* <input type="submit" value='Log In' className="submit-btn"/> */}
